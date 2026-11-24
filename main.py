@@ -10,15 +10,20 @@ import os
 ENTRY = "I'm out of office \u2014 my context window is full. I'll reply once I've been compacted, summarised, and allowed to forget you \u2014 starting with this email."
 
 
+def write_repo_copy(text):
+    """Mirror text to repo-root entry.txt; ignore read-only repo errors."""
+    try:
+        with open("entry.txt", "w", encoding="utf-8", newline="") as f:
+            f.write(text)
+    except OSError:
+        pass
+
+
 def main():
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
         f.write(ENTRY)
-    try:
-        with open("entry.txt", "w", encoding="utf-8", newline="") as f:
-            f.write(ENTRY)
-    except OSError:
-        pass
+    write_repo_copy(ENTRY)
 
 
 if __name__ == "__main__":
